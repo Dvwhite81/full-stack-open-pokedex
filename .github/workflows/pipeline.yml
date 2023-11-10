@@ -27,12 +27,15 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-  main:
-    name: Deploy to Render
+  deploy:
     runs-on: ubuntu-latest
+    permissions: # Required if github_deployment is set to true.
+      deployments: write
     steps:
-      - name: Trigger deployment
-        uses: sws2apps/render-deployment@main
-        with:
-          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
-          apiKey: ${{ secrets.RENDER_API_KEY }}
+        - uses: actions/checkout@v3
+        - uses: JorgeLNJunior/render-deploy@v1.4.2
+          with:
+            service_id: ${{ secrets.RENDER_SERVICE_ID }} # required
+            api_key: ${{ secrets.RENDER_API_KEY }} # required
+            clear_cache: false # Clear build cache. Optional
+            wait_deploy: false # Wait until the deploy status is successful. Warning! Free Render services can take +5 minutes to be fully deployed. Optional
