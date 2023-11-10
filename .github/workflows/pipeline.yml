@@ -27,3 +27,12 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
+  main:
+    name: Deploy to render
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment
+        uses: sws2apps/render-deployment@main
+        with:
+          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
+          apiKey: ${{ secrets.RENDER_API_KEY }}
